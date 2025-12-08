@@ -4,7 +4,7 @@
     "title": "День открытых дверей в колледже",
     "body": "В эту субботу в 10:00 в нашем колледже пройдёт День открытых дверей. Абитуриенты смогут познакомиться с преподавателями, посетить мастер-классы и задать вопросы по приёму.",
     "date": "2025-02-10",
-    "imageUrl": "https://github.com/lytkinnikita07/demo-site/blob/main/021220251019_1.2e16d0ba.fill-350x220.format-webp.png"
+    "imageUrl": "https://github.com/lytkinnikita07/demo-site/blob/main/021220251019_1.2e16d0ba.fill-350x220.format-webp.png?raw=true"
   },
   {
     "id": 2,
@@ -14,4 +14,5 @@
     "imageUrl": "https://lytkinnikita07.github.io/demo-site/img/021220251019_1.2e16d0ba.fill-350x220.format-webp.png"
   }
 ]
+
 
