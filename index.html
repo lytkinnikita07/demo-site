@@ -6,116 +6,294 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
+        :root {
+            --primary: #1565C0;
+            --primary-dark: #0D47A1;
+            --bg: #F5F5F5;
+            --surface: #FFFFFF;
+            --text-main: #212121;
+            --text-muted: #757575;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
         body {
             margin: 0;
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            background: #f5f5f5;
-            color: #212121;
+            background: var(--bg);
+            color: var(--text-main);
         }
 
         header {
-            background: #1565C0;
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary));
             color: white;
-            padding: 16px;
+            padding: 16px 24px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
 
         header h1 {
             margin: 0;
             font-size: 20px;
+            letter-spacing: 0.03em;
+        }
+
+        header span {
+            font-size: 12px;
+            opacity: 0.8;
         }
 
         main {
-            max-width: 900px;
-            margin: 16px auto;
-            padding: 0 16px 32px;
+            max-width: 1100px;
+            margin: 16px auto 32px;
+            padding: 0 16px;
         }
 
-        .news-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
-            margin-bottom: 16px;
+        .details {
+            background: var(--surface);
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            margin-bottom: 24px;
+            overflow: hidden;
+            transform: translateY(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+        }
+
+        .details.visible {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
+        }
+
+        .details-image-wrapper {
+            max-height: 320px;
             overflow: hidden;
         }
 
-        .news-image {
+        .details-image {
             width: 100%;
-            height: 200px;
+            height: 100%;
+            max-height: 320px;
             object-fit: cover;
             display: block;
         }
 
-        .news-content {
-            padding: 16px;
+        .details-content {
+            padding: 20px 20px 24px;
         }
 
-        .news-title {
+        .details-title {
             margin: 0 0 8px;
-            font-size: 18px;
+            font-size: 22px;
             font-weight: 600;
         }
 
-        .news-meta {
-            margin: 0 0 12px;
+        .details-meta {
+            margin: 0 0 16px;
             font-size: 12px;
-            color: #757575;
+            color: var(--text-muted);
         }
 
-        .news-body {
+        .details-body {
             margin: 0;
             font-size: 14px;
-            line-height: 1.4;
+            line-height: 1.6;
+        }
+
+        .news-grid-title {
+            margin: 0 0 12px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        @media (min-width: 768px) {
+            .news-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        .news-card {
+            background: var(--surface);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.10);
+            cursor: pointer;
+            transform: translateY(0);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            position: relative;
+        }
+
+        .news-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+        }
+
+        .news-card-image-wrapper {
+            position: relative;
+            height: 180px;
+            overflow: hidden;
+        }
+
+        .news-card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .news-card:hover .news-card-image {
+            transform: scale(1.05);
+        }
+
+        .news-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                    to top,
+                    rgba(0, 0, 0, 0.65) 0%,
+                    rgba(0, 0, 0, 0.25) 40%,
+                    rgba(0, 0, 0, 0.0) 100%
+            );
+            display: flex;
+            align-items: flex-end;
+            padding: 12px 14px;
+        }
+
+        .news-card-title {
+            margin: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .news-card-body {
+            padding: 12px 14px 14px;
+            font-size: 13px;
+            color: var(--text-muted);
         }
 
         footer {
             text-align: center;
             font-size: 12px;
-            color: #9E9E9E;
+            color: var(--text-muted);
             padding: 16px;
         }
     </style>
 </head>
 <body>
 <header>
-    <h1>Новости колледжа · Smart Campus</h1>
+    <h1>Smart Campus · Новости колледжа</h1>
+    <span>Прототип для мобильного приложения</span>
 </header>
 
 <main>
-    <!-- Новость 1 -->
-    <article class="news-card" id="news-1">
-        <img class="news-image"
-             src="https://via.placeholder.com/800x400.png?text=Open+Day"
-             alt="День открытых дверей">
-        <div class="news-content">
-            <h2 class="news-title">День открытых дверей в колледже</h2>
-            <p class="news-meta">10 февраля 2025 · Колледж</p>
-            <p class="news-body">
-                В эту субботу в 10:00 в нашем колледже пройдёт День открытых дверей.
-                Абитуриенты смогут познакомиться с преподавателями, посетить мастер-классы
-                и задать вопросы по приёму.
-            </p>
+    <section id="news-details" class="details">
+        <div class="details-image-wrapper">
+            <img id="details-image" class="details-image" src="" alt="">
         </div>
-    </article>
+        <div class="details-content">
+            <h2 id="details-title" class="details-title"></h2>
+            <p id="details-meta" class="details-meta"></p>
+            <p id="details-body" class="details-body"></p>
+        </div>
+    </section>
 
-    <!-- Новость 2 -->
-    <article class="news-card" id="news-2">
-        <img class="news-image"
-             src="https://via.placeholder.com/800x400.png?text=Smart+Campus"
-             alt="Проект Smart Campus">
-        <div class="news-content">
-            <h2 class="news-title">Запуск проекта Smart Campus</h2>
-            <p class="news-meta">5 февраля 2025 · IT-отделение</p>
-            <p class="news-body">
-                Студенты IT-отделения запускают пилотный проект Smart Campus.
-                В рамках проекта разрабатывается мобильное приложение
-                для просмотра новостей, фотоотчётов и расписания мероприятий колледжа.
-            </p>
-        </div>
-    </article>
+    <h2 class="news-grid-title">Последние новости</h2>
+    <section id="news-grid" class="news-grid">
+    </section>
 </main>
 
 <footer>
     &copy; 2025 Колледж · Проект Smart Campus
 </footer>
+
+<script>
+    function formatDate(dateStr) {
+        if (!dateStr) return "";
+        const parts = dateStr.split("-");
+        if (parts.length !== 3) return dateStr;
+        return parts[2] + "." + parts[1] + "." + parts[0];
+    }
+
+    const detailsSection = document.getElementById('news-details');
+    const detailsImage = document.getElementById('details-image');
+    const detailsTitle = document.getElementById('details-title');
+    const detailsMeta = document.getElementById('details-meta');
+    const detailsBody = document.getElementById('details-body');
+    const grid = document.getElementById('news-grid');
+
+    let newsData = [];
+
+    function openDetails(item) {
+        detailsImage.src = item.imageUrl;
+        detailsImage.alt = item.title;
+        detailsTitle.textContent = item.title;
+        detailsMeta.textContent = formatDate(item.date) + " · Колледж";
+        detailsBody.textContent = item.body;
+
+        detailsSection.classList.add('visible');
+        detailsSection.scrollIntoView({behavior: 'smooth', block: 'start'});
+    }
+
+    function renderGrid() {
+        grid.innerHTML = "";
+        if (newsData.length === 0) {
+            grid.innerHTML = "<p style='color:#757575;font-size:14px;'>Новостей пока нет.</p>";
+            return;
+        }
+        newsData.forEach(item => {
+            const card = document.createElement('article');
+            card.className = 'news-card';
+            card.innerHTML = `
+                <div class="news-card-image-wrapper">
+                    <img class="news-card-image" src="${item.imageUrl}" alt="${item.title}">
+                    <div class="news-card-overlay">
+                        <h2 class="news-card-title">${item.title}</h2>
+                    </div>
+                </div>
+                <div class="news-card-body">
+                    ${item.body.length > 90 ? item.body.slice(0, 90) + "..." : item.body}
+                </div>
+            `;
+            card.addEventListener('click', () => openDetails(item));
+            grid.appendChild(card);
+        });
+    }
+
+    async function loadNews() {
+        try {
+            const response = await fetch('news.json');
+            if (!response.ok) {
+                console.error('Не удалось загрузить news.json', response.status);
+                renderGrid();
+                return;
+            }
+            newsData = await response.json();
+            renderGrid();
+            if (newsData.length > 0) {
+                openDetails(newsData[0]);
+            }
+        } catch (e) {
+            console.error('Ошибка загрузки новостей', e);
+            renderGrid();
+        }
+    }
+
+    loadNews();
+</script>
 </body>
 </html>
